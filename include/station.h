@@ -12,15 +12,15 @@
 #define USERNAME_LEN 21       //最长用户名
 #define PASSWORD_LEN 21       //最长密码长度
 #define TRACKING_NUM_LEN 15   //最长单号
-#define PHONE_NUMBER_LEN 12  //手机号长度+1
-#define PICKUP_CODE_LEN 7         //取件码格式：一位大写字母+一位小写字母+四位数字
+#define PHONE_NUMBER_LEN 12   //手机号长度+1
+#define PICKUP_CODE_LEN 7     //取件码格式：一位大写字母+一位小写字母+四位数字
 
 //支付方式
 typedef enum {
-    PAY_CASH = 1,               //现金
-    PAY_WECHAT,             //微信
-    PAY_ALIPAY,                 //支付宝
-    PAY_OTHER                   //其他
+    PAY_CASH = 1,             //现金
+    PAY_WECHAT,               //微信
+    PAY_ALIPAY,               //支付宝
+    PAY_OTHER                 //其他
 }payment_method;
 
 //结算方式
@@ -31,11 +31,11 @@ typedef enum {
 
 //包裹状态
 typedef enum {
-    STATUS_INSTOCK = 1,             //入库
-    STATUS_PENDING_PICKUP,          //待取
-    STATUS_PICKEDUP,                //已取
-    STATUS_REJECTED,                //拒收
-    STATUS_RETURNED,                //退回
+    STATUS_INSTOCK = 1,       //入库
+    STATUS_PENDING_PICKUP,    //待取
+    STATUS_PICKEDUP,          //已取
+    STATUS_REJECTED,          //拒收
+    STATUS_RETURNED,          //退回
 }packagestatus;
 
 //保价情况
@@ -95,59 +95,66 @@ typedef struct System {
 }System;
 
 // 核心数据结构操作 (成员1)
-System* loadSystemData();
-void saveSystemData(const System* system);
-Package* loadPackages();
-void savePackages(const Package* head);
-User* loadUsers();
-void saveUsers(const User* head);
-Admin* loadAdmin();
-void saveAdmin(const Admin* admin);
+System* loadSystemData();                           // 从文件加载系统数据
+void saveSystemData(const System* system);          // 保存系统数据到文件
+Package* loadPackages();                            // 从文件加载包裹数据
+void savePackages(const Package* head);             // 保存包裹数据到文件
+User* loadUsers();                                  // 从文件加载用户数据
+void saveUsers(const User* head);                   // 保存用户数据到文件
+Admin* loadAdmin();                                 // 从文件加载管理员数据
+void saveAdmin(const Admin* admin);                 // 保存管理员数据到文件
 
 // 内存管理函数 (成员1)
-void freePackageList(Package* head);
-void freeUserList(User* head);
+void freePackageList(Package* head);                // 释放包裹链表内存
+void freeUserList(User* head);                      // 释放用户链表内存
 
 // 初始化系统函数 (成员1)
-System* initializeSystem();
+System* initializeSystem();                         // 初始化系统数据
 
 // 认证模块 (成员1)
-User* userLogin(const char* username, const char* password, const User* user_head);
-int adminLogin(const char* username, const char* password, const Admin* admin_data);
-int registerUser(const char* username, const char* phone_number, const char* password, int pay_method, int settle_method, User** user_head);
-int changePassword(const char* username, const char* old_password, const char* new_password, User* user_head, Admin* admin_data);
+User* userLogin(const char* username, const char* password, const User* user_head);      // 用户登录验证
+int adminLogin(const char* username, const char* password, const Admin* admin_data);     // 管理员登录验证
+int registerUser(const char* username, const char* phone_number, const char* password, int pay_method, int settle_method, User** user_head); // 注册新用户
+int changePassword(const char* username, const char* old_password, const char* new_password, User* user_head, Admin* admin_data);  // 修改密码
 
 // 包裹管理模块 (成员2)
-Package* createPackage(const char* tracking_number, const char* user_phone_number, double weight, double distance, int is_insured, double insured_value);
-void addPackage(Package** head, Package* new_package);
-Package* findPackageByTrackingNumber(const char* tracking_number, const Package* head);
-Package* findPackagesByPhone(const char* phone_number, const Package* head); // 返回匹配的第一个包裹，可根据需求修改为返回链表
-void updatePackageStatus(const char* tracking_number, int new_status, Package* head);
-void removePackage(Package** head, const char* tracking_number);
+Package* createPackage(const char* tracking_number, const char* user_phone_number, double weight, double distance, int is_insured, double insured_value);  // 创建新包裹
+void addPackage(Package** head, Package* new_package);                                   // 添加包裹到系统
+Package* findPackageByTrackingNumber(const char* tracking_number, const Package* head);  // 通过单号查找包裹
+Package* findPackagesByPhone(const char* phone_number, const Package* head);             // 通过手机号查找包裹(返回第一个匹配的包裹)
+void updatePackageStatus(const char* tracking_number, int new_status, Package* head);    // 更新包裹状态
+void removePackage(Package** head, const char* tracking_number);                         // 从系统中移除包裹
 
 // 包裹业务逻辑 (成员2)
-void generatePickupCode(char* pickup_code);
-double calculatePackageCost(double weight, double distance, int is_insured, double insured_value, int attribute); // 增加包裹属性参数
+void generatePickupCode(char* pickup_code);                                              // 生成取件码
+double calculatePackageCost(double weight, double distance, int is_insured, double insured_value, int attribute); // 计算包裹费用
 
 // 用户管理模块 (成员2)
-User* createUser(const char* username, const char* phone_number, const char* password, int pay_method, int settle_method);
-void addUser(User** head, User* new_user);
-User* findUserByPhone(const char* phone_number, const User* head);
-User* findUserByUsername(const char* username, const User* head);
-void updateUser(User* user, int new_pay_method, int new_settle_method);
-void removeUser(User** head, const char* username);
+User* createUser(const char* username, const char* phone_number, const char* password, int pay_method, int settle_method);  // 创建新用户
+void addUser(User** head, User* new_user);                                               // 添加用户到系统
+User* findUserByPhone(const char* phone_number, const User* head);                       // 通过手机号查找用户
+User* findUserByUsername(const char* username, const User* head);                        // 通过用户名查找用户
+void updateUser(User* user, int new_pay_method, int new_settle_method);                  // 更新用户支付和结算方式
+void removeUser(User** head, const char* username);                                      // 从系统中移除用户
+void displayUser(const User* user);                                               // 显示用户详细信息
+void listAllUsers(const User* head);                                                    // 列出系统中所有用户
+int updateUserPassword(User* user, const char* old_password, const char* new_password);  // 更新用户密码
+void searchUsers(const User* head, const char* search_term);                             // 根据关键词搜索用户
+void generateUserStatistics(const User* head);                                           // 生成用户统计信息
+void userManagementMenu(User** head, System* system_data);                               // 用户管理菜单界面
 
 // 业务流程模块 (成员2)
-void processPackageInbound(Package** package_head, System* system_data, User* user_head);
-void processPackageOutbound(Package** package_head, System* system_data);
-void processSendPackage(Package** package_head, User** user_head, System* system_data);
-void handleExceptions(int error_code, const char* message);
+void processPackageInbound(Package** package_head, System* system_data, User* user_head);    // 处理包裹入库流程
+void processPackageOutbound(Package** package_head, System* system_data);                    // 处理包裹出库流程
+void processSendPackage(Package** package_head, User** user_head, System* system_data);      // 处理寄件流程
+void handleExceptions(int error_code, const char* message);                                  // 处理异常情况
 
 // 用户界面模块 (成员2)
-void displayAdminMenu();
-void displayUserMenu();
-void displayPackageDetails(const Package* package);
-void displayUserDetails(const User* user);
-void displaySystemInfo(const System* system);
+void displayAdminMenu();                                                                 // 显示管理员菜单
+void displayUserMenu();                                                                  // 显示用户菜单
+void displayPackageDetails(const Package* package);                                      // 显示包裹详细信息
+void displayUserDetails(const User* user);                                               // 显示用户详细信息
+void displaySystemInfo(const System* system);                                            // 显示系统信息
+
 
 #endif
