@@ -1,0 +1,63 @@
+两人分工方案与合作计划
+成员1：核心结构与认证模块
+任务清单
+       
+           
+          
+    1. 核心数据结构操作 
+        ◦ 实现文件读写函数 
+            ▪ loadSystemData()/saveSystemData() 
+            ▪ loadPackages()/savePackages() 
+            ▪ loadUsers()/saveUsers() 
+            ▪ loadAdmin()/saveAdmin() 
+        ◦ 实现内存管理函数 
+            ▪ 释放链表资源函数 
+            ▪ 初始化系统函数 
+    2. 认证模块 
+        ◦ 用户登录函数 userLogin() 
+        ◦ 管理员登录函数 adminLogin() 
+        ◦ 用户注册函数 registerUser() 
+        ◦ 密码修改函数 changePassword() 
+    3. 主程序框架 
+        ◦ 创建 main.c 实现程序入口 
+        ◦ 实现主菜单界面 
+        ◦ 实现程序初始化和退出逻辑 
+交付目标
+    • station.h 完整头文件 
+    • 主程序框架 main.c 
+    • 文件操作函数实现 
+    • 认证模块函数实现 
+    • 基本的用户界面框架 
+成员2：功能模块开发
+任务清单
+    1. 包裹管理模块 
+        ◦ 实现包裹操作基本函数 
+            ▪ createPackage() 
+            ▪ addPackage() 
+            ▪ findPackageByTrackingNumber() 
+            ▪ findPackagesByPhone() 
+            ▪ updatePackageStatus() 
+            ▪ removePackage() 
+        ◦ 实现包裹业务逻辑 
+            ▪ generatePickupCode() 生成取件码 
+            ▪ calculatePackageCost() 计算费用 
+    2. 用户管理模块 
+        ◦ 实现用户操作基本函数 
+            ▪ createUser() 
+            ▪ addUser() 
+            ▪ findUserByPhone()/findUserByUsername() 
+            ▪ updateUser() 
+            ▪ removeUser() 
+    3. 业务流程模块 
+        ◦ 实现包裹入库流程 
+        ◦ 实现包裹出库流程 
+        ◦ 实现寄件流程 
+        ◦ 实现异常处理流程 
+    4. 用户界面模块 
+        ◦ 实现管理员菜单和功能界面 
+        ◦ 实现用户菜单和功能界面 
+交付目标
+    • 包裹管理功能实现 
+    • 用户管理功能实现 
+    • 业务流程功能实现 
+    • 完整的用户和管理员界面实现
