@@ -2,39 +2,38 @@
 
 int main() {
 
-	//¼ÓÔØÊı¾İ
-	System* system_data = initializeSystem();
-	Package* package_head = loadPackages();
-	User* user_head = loadUsers();
-	Admin* admin_data = loadAdmin();
-	User* current_user = NULL;
+    // åˆå§‹åŒ–
+    System* system_data = initializeSystem();
+    Package* package_head = loadPackages();
+    User* user_head = loadUsers();
+    Admin* admin_data = loadAdmin();
+    User* current_user = NULL;
 
 
-	welcomeScreen();
+    welcomeScreen();
 
 
 
-	//µÇÂ¼
-	int login_result = loginInterface(&user_head, admin_data, &current_user);
-	if (login_result == 1) {
-		mainMenuInterface(current_user, &package_head, &user_head, system_data, admin_data);
-	}
-	else if (login_result == 2) {
-		adminConsoleInterface(&package_head, &user_head, system_data, admin_data);
-	}
+    // ç™»å½•
+    int login_result = loginInterface(&user_head, admin_data, &current_user);
+    if (login_result == 1) {
+        mainMenuInterface(current_user, &package_head, &user_head, system_data, admin_data);
+    }
+    else if (login_result == 2) {
+        adminConsoleInterface(&package_head, &user_head, system_data, admin_data);
+    }
 
-	//½«Êı¾İ±£´æÖÁÎÄ¼ş
-	saveSystemData(system_data);
-	savePackages(package_head);
-	saveUsers(user_head);
-	saveAdmin(admin_data);
+    // ä¿å­˜æ•°æ®åˆ°æ–‡ä»¶
+    saveSystemData(system_data);
+    savePackages(package_head);
+    saveUsers(user_head);
+    saveAdmin(admin_data);
 
-	//ÊÍ·ÅÁ´±í
-	freePackageList(package_head);
-	freeUserList(user_head);
-	free(system_data);
-	free(admin_data);
+    // é‡Šæ”¾å†…å­˜
+    freePackageList(package_head);
+    freeUserList(user_head);
+    free(system_data);
+    free(admin_data);
 
-	return 0;
+    return 0;
 }
-

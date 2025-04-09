@@ -886,8 +886,7 @@ void adminConsoleInterface(Package** package_head, User** user_head, System* sys
 
 // 欢迎界面
 void welcomeScreen() {
-    system("cls"); // 清屏（Windows系统）
-    // 对于Linux系统，使用 system("clear");
+    //system("clear");
     
     printf("\n\n");
     printf("╔══════════════════════════════════════════════════════════╗\n");
@@ -899,7 +898,6 @@ void welcomeScreen() {
     printf("║                                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════╝\n");
     printf("\n                Current Date and Time: %s %s\n", __DATE__, __TIME__);
-    printf("                Current User's Login: ctfy66\n\n");
     
     printf("           按任意键继续...");
     getchar(); // 等待用户按键
@@ -1009,8 +1007,6 @@ void packageManagementMenu(Package** head, System* system_data, User* user_head)
         printf("4. 删除包裹\n");
         printf("5. 显示所有包裹\n");
         printf("6. 按状态筛选包裹\n");
-        printf("7. 批量导入包裹\n");
-        printf("8. 包裹统计信息\n");
         printf("0. 返回上级菜单\n");
         printf("请选择操作: ");
         scanf("%d", &choice);
@@ -1165,20 +1161,9 @@ void packageManagementMenu(Package** head, System* system_data, User* user_head)
                 }
                 break;
                 
-            case 7: // 批量导入包裹
-                printf("\n--- 批量导入包裹 ---\n");
-                printf("请输入包含包裹信息的文件名: ");
-                scanf("%s", filename);
+            
                 
-                // 假定已实现的批量导入函数
-                bulkImportPackages(head, system_data, filename);
-                break;
-                
-            case 8: // 包裹统计信息
-                // 假定已实现的包裹统计函数
-                generatePackageStatistics(*head);
-                break;
-                
+            
             case 0: // 返回上级菜单
                 printf("返回上级菜单\n");
                 break;

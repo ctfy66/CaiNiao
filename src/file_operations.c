@@ -8,7 +8,7 @@ System* loadSystemData() {
 		printf("内存分配失败\n");
 		return NULL;
 	}
-	FILE* file = fopen("system_data.txt", "r");
+	FILE* file = fopen("data/system_data.txt", "r");
 	if (file == NULL) {
 		//文件不存在，初始化默认值
 		system->operating_funds = 0;
@@ -30,9 +30,9 @@ System* loadSystemData() {
 
 //保存系统数据到文件
 void saveSystemData(const System* system) {
-	FILE* file = fopen("system_data.txt", "w");
+	FILE* file = fopen("data/system_data.txt", "w");
 	if (file == NULL) {
-		printf("无法打开文件\n");
+		printf("无法打开文件'system_data.txt'\n");
 		return;
 	}
 	fprintf(file, "%lf %lf %d %d %d",
@@ -47,9 +47,9 @@ void saveSystemData(const System* system) {
 //从文件加载包裹数据
 Package* loadPackages() {
 	Package* head = NULL;
-	FILE* file = fopen("packages.txt", "r");
+	FILE* file = fopen("data/packages.txt", "r");
 	if (file == NULL) {
-		printf("无法打开文件\n");
+		printf("无法打开文件'packages.txt'\n");
 		return head;
 	}
 	int temp_status, temp_is_insured;//临时未类型转换的变量
@@ -84,9 +84,9 @@ Package* loadPackages() {
 
 //保存包裹数据到文件
 void savePackages(const Package* head) {
-	FILE* file = fopen("packages.txt", "w");
+	FILE* file = fopen("data/packages.txt", "w");
 	if (file == NULL) {
-		printf("无法打开文件\n");
+		printf("无法打开文件'packages.txt'\n");
 		return;
 	}
 	const Package* current = head;
@@ -104,9 +104,10 @@ void savePackages(const Package* head) {
 //从文件加载用户数据
 User* loadUsers() {
 	User* head = NULL;
-	FILE* file = fopen("users.txt", "r");
+	FILE* file = fopen("data/users.txt", "r");
 	if (file == NULL) {
-		printf("无法打开文件\n");
+		printf("无法打开文件'users.txt'\n");
+        exit(-1);
 		return head;
 	}
 	char username[USERNAME_LEN];
@@ -141,9 +142,9 @@ User* loadUsers() {
 
 //保存用户数据到文件
 void saveUsers(const User* head) {
-	FILE* file = fopen("users.txt", "w");
+	FILE* file = fopen("data/users.txt", "w");
 	if (file == NULL) {
-		printf("无法打开文件\n");
+		printf("无法打开文件'users.txt\n");
 		return;
 	}
 	const User* current = head;
@@ -165,7 +166,7 @@ Admin* loadAdmin() {
 		printf("内存分配失败\n");
 		return NULL;
 	}
-	FILE* file = fopen("admin.txt", "r");
+	FILE* file = fopen("data/admin.txt", "r");
 	if (file == NULL) {//文件不存在，初始化默认值
 		strcpy(admin->username, "admin");
 		strcpy(admin->password, "admin");
@@ -178,7 +179,7 @@ Admin* loadAdmin() {
 
 //保存管理员数据到文件
 void saveAdmin(const Admin* admin) {
-	FILE* file = fopen("admin.txt", "w");
+	FILE* file = fopen("data/admin.txt", "w");
 	if (file == NULL) {
 		printf("无法打开文件\n");
 		return;

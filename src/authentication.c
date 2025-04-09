@@ -24,9 +24,7 @@ int adminLogin(const char* username, const char* password, const Admin* admin_da
         && strcmp(admin_data->password, password) == 0);
 }
 
-//用户注册函数
-User* createUser(const char* username, const char* phone_number, const char* password,
-    int pay_method, int settle_method)
+
 int registerUser(const char* username, const char* phone_number, const char* password,
     int pay_method, int settle_method, User** user_head) {
     //检查用户名是否已存在
@@ -38,8 +36,8 @@ int registerUser(const char* username, const char* phone_number, const char* pas
         current = current->next;
     }
     //创建新用户节点
-    User* new_user = (User*)malloc(sizeof(user));
-    if (user == NULL) {
+    User* new_user = (User*)malloc(sizeof(User));
+    if (new_user == NULL) {
         printf("内存分配失败\n");
         return 0;
     }
@@ -62,7 +60,7 @@ int changePassword(const char* username, const char* old_password,
     const char* new_password, User* user_head, Admin* admin_data) {
     if (strcmp(admin_data->username, username == 0)) {
         if (strcmp(admin_data->password,old_password) != 0) {
-            return 0
+            return 0;
         }
         strcpy(admin_data->password, new_password);
         saveAdmin(admin_data);
@@ -70,7 +68,7 @@ int changePassword(const char* username, const char* old_password,
     }
     User* user = findUserByUsername(username, user_head);
     if (user == NULL) {
-        return0;
+        return 0;
     }
     if (strcmp(user->password, old_password) != 0) {
         return 0;

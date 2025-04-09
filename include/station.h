@@ -157,7 +157,7 @@ void displayUserDetails(const User* user);                                      
 void displaySystemInfo(const System* system);                                            // 显示系统信息
 
 
-void welcomeScreen()
+void welcomeScreen();
 int loginInterface(User** user_head, Admin* admin_data, User** current_user);
 
 #endif
