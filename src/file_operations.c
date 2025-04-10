@@ -107,7 +107,6 @@ User* loadUsers() {
 	FILE* file = fopen("data/users.txt", "r");
 	if (file == NULL) {
 		printf("无法打开文件'users.txt'\n");
-        exit(-1);
 		return head;
 	}
 	char username[USERNAME_LEN];
@@ -118,8 +117,8 @@ User* loadUsers() {
 	int package_sent_count;
 	int package_received_count;
 	while (fscanf(file, "%s %s %s %d %d %d %d",
-		username, phone_number, password, pay_method, settle_method,
-		package_sent_count, package_received_count) != EOF) {
+    username, phone_number, password, &pay_method, &settle_method,
+    &package_sent_count, &package_received_count) != EOF) {
 		User* new_user = createUser(username, phone_number, password,pay_method, settle_method);
 		if (new_user == NULL) {//内存分配失败释放所有已分配内存
 			printf("内存分配失败\n");

@@ -16,7 +16,6 @@ void displayAdminMenu() {
     printf("║ 6. 修改密码                             ║\n");
     printf("║ 0. 退出登录                             ║\n");
     printf("╚═════════════════════════════════════════╝\n");
-    printf("当前日期时间：%s\n", __DATE__ " " __TIME__);
     printf("用户登录名：%s\n", "管理员");
     printf("请选择操作 [0-6]: ");
 }
@@ -25,7 +24,7 @@ void displayAdminMenu() {
 void displayUserMenu() {
     printf("\n");
     printf("╔═════════════════════════════════════════╗\n");
-    printf("║        菜鸟驿站管理系统 - 用户菜单       ║\n");
+    printf("║        菜鸟驿站管理系统 - 用户菜单      ║\n");
     printf("╠═════════════════════════════════════════╣\n");
     printf("║ 1. 查询包裹                             ║\n");
     printf("║ 2. 寄送包裹                             ║\n");
@@ -35,7 +34,6 @@ void displayUserMenu() {
     printf("║ 6. 修改密码                             ║\n");
     printf("║ 0. 退出登录                             ║\n");
     printf("╚═════════════════════════════════════════╝\n");
-    printf("当前日期时间：%s\n", __DATE__ " " __TIME__);
     printf("请选择操作 [0-6]: ");
 }
 
@@ -65,14 +63,14 @@ void displayPackageDetails(const Package* package) {
     printf("\n");
     printf("┌─────────────────────────────────────────┐\n");
     printf("│             包裹详细信息                │\n");
-    printf("├─────────────────────────────────────────┤\n");
-    printf("│ 快递单号: %-30s │\n", package->tracking_number);
-    printf("│ 收件人手机: %-28s │\n", package->user_phone_number);
-    printf("│ 取件码: %-32s │\n", package->pickup_code);
-    printf("│ 重量: %-35.2f │\n", package->weight);
-    printf("│ 距离: %-35.2f │\n", package->distance);
-    printf("│ 状态: %-35s │\n", status_desc[status_index]);
-    printf("│ 保价: %-35s │\n", package->is_insured == INSURED_YES ? "是" : "否");
+    printf("├────────────────────────────────────────┤\n");
+    printf("│ 快递单号: %-30s│\n", package->tracking_number);
+    printf("│ 收件人手机: %-28s│\n", package->user_phone_number);
+    printf("│ 取件码: %-32s│\n", package->pickup_code);
+    printf("│ 重量: %-35.2f│\n", package->weight);
+    printf("│ 距离: %-35.2f│\n", package->distance);
+    printf("│ 状态: %-35s│\n", status_desc[status_index]);
+    printf("│ 保价: %-35s│\n", package->is_insured == INSURED_YES ? "是" : "否");
     
     if (package->is_insured == INSURED_YES) {
         printf("│ 保价金额: %-31.2f │\n", package->insured_value);
@@ -704,10 +702,6 @@ void statisticsReportInterface(const Package* package_head, const User* user_hea
                 printf("总收入: %.2f 元\n", system_data->total_revenue);
                 printf("运营资金: %.2f 元\n", system_data->operating_funds);
                 
-                // 这里可以添加更复杂的趋势分析，如按月份分析等
-                printf("\n收入来源分析：\n");
-                printf("由于本系统没有记录历史数据，无法提供详细的趋势分析\n");
-                printf("可以考虑在未来版本中加入按时间记录收入数据的功能\n");
                 break;
                 
             case 4: // 系统运营概览
@@ -897,9 +891,8 @@ void welcomeScreen() {
     printf("║             Station Management System v1.0               ║\n");
     printf("║                                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════╝\n");
-    printf("\n                Current Date and Time: %s %s\n", __DATE__, __TIME__);
     
-    printf("           按任意键继续...");
+    printf("           按 Enter 键继续...");
     getchar(); // 等待用户按键
 }
 
@@ -920,7 +913,13 @@ int loginInterface(User** user_head, Admin* admin_data, User** current_user) {
         printf("║ 0. 退出系统                              ║\n");
         printf("╚══════════════════════════════════════════╝\n");
         printf("请选择操作 [0-3]: ");
-        scanf("%d", &choice);
+
+        if (scanf("%d", &choice) != 1) {
+            // 清空输入缓冲区
+            while (getchar() != '\n');
+            printf("无效的输入，请输入一个数字\n");
+            continue;  // 跳过当前循环的剩余部分，重新开始
+        }
         
         switch (choice) {
             case 1: // 用户登录
@@ -990,7 +989,7 @@ int loginInterface(User** user_head, Admin* admin_data, User** current_user) {
     return choice == 0 ? 0 : -1; // 0表示退出，-1表示其他情况
 }
 
-// 包裹管理菜单实现 - 为了完整性添加
+// 包裹管理菜单实现 
 void packageManagementMenu(Package** head, System* system_data, User* user_head) {
     int choice;
     char tracking_number[TRACKING_NUM_LEN];

@@ -39,14 +39,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 	@echo "编译: $<"
 
-# 添加main.c文件 (如果还没有)
-main:
-	@if [ ! -f $(SRC_DIR)/main.c ]; then \
-		echo "创建main.c文件..."; \
-		echo "#include \"../include/station.h\"\n\nint main() {\n    printf(\"菜鸟驿站管理系统启动...\\n\");\n    // TODO: 初始化系统并调用主菜单\n    return 0;\n}" > $(SRC_DIR)/main.c; \
-	else \
-		echo "main.c已存在"; \
-	fi
+
 
 # 清理生成的文件
 clean:
