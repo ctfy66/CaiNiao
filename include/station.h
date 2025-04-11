@@ -160,4 +160,17 @@ void displaySystemInfo(const System* system);                                   
 void welcomeScreen();
 int loginInterface(User** user_head, Admin* admin_data, User** current_user);
 
+
+
+// 通知类型
+typedef enum {
+    NOTIFY_PACKAGE_ARRIVAL = 1,  // 包裹到达通知(给收件人)
+    NOTIFY_PACKAGE_SENT = 2      // 包裹已发出通知(给寄件人)
+} notification_type;
+
+// 通知函数
+// 模拟发送包裹到达通知(给收件人)
+void sendPackageArrivalNotification(const Package* package);
+
+
 #endif

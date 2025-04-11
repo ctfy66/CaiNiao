@@ -303,6 +303,7 @@ void processPackageInbound(Package** package_head, System* system_data, User* us
     printf("单号: %s\n", tracking_number);
     printf("取件码: %s\n", new_package->pickup_code);
     printf("费用: %.2f 元\n", new_package->cost);
+    sendPackageArrivalNotification(new_package);
 }
 
 // 包裹出库流程
@@ -515,7 +516,7 @@ void processSendPackage(Package** package_head, User** user_head, System* system
         if (payment_confirm == 'Y' || payment_confirm == 'y') {
             // 模拟支付过程
             printf("处理支付中...\n");
-            payment_successful = 1;  // 实际应用中应有真实支付验证
+            payment_successful = 1;  
             
             if (payment_successful) {
                 // 添加包裹到系统
@@ -569,14 +570,5 @@ void handleExceptions(int error_code, const char* message) {
             break;
     }
     
-    // 记录异常到日志
-    FILE* log_file = fopen("error_log.txt", "a");
-    if (log_file != NULL) {
-        time_t now = time(NULL);
-        char time_str[64];
-        strftime(time_str, sizeof(time_str), "%Y-%m-%d %H:%M:%S", localtime(&now));
-        
-        fprintf(log_file, "[%s] 错误 [%d]: %s\n", time_str, error_code, message);
-        fclose(log_file);
-    }
+    
 }
