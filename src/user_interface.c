@@ -155,7 +155,7 @@ void displaySystemInfo(const System* system) {
 }
 
 // 包裹查询界面
-void packageQueryInterface(const Package* package_head) {
+void packageQueryInterface(const Package* package_head,const User* current_user) {
     int choice;
     char tracking_number[TRACKING_NUM_LEN];
     char phone_number[PHONE_NUMBER_LEN];
@@ -225,7 +225,7 @@ void packageQueryInterface(const Package* package_head) {
                     if (strcmp(current->pickup_code, pickup_code) == 0) {
                         displayPackageDetails(current);
                         found_count++;
-                        break; // 取件码应该是唯一的，找到一个就退出
+                        break; 
                     }
                     current = current->next;
                 }
@@ -241,7 +241,7 @@ void packageQueryInterface(const Package* package_head) {
                 current = package_head;
                 
                 while (current != NULL) {
-                    if (current->status == STATUS_PENDING_PICKUP) {
+                    if (current->status == STATUS_PENDING_PICKUP && strcmp(current->user_phone_number, current_user->phone_number) == 0) {
                         displayPackageDetails(current);
                         found_count++;
                     }
@@ -441,7 +441,7 @@ void feeQueryInterface(const Package* package_head, User* current_user) {
                 const Package* current = package_head;
                 
                 while (current != NULL) {
-                    // 假设未付款的包裹是状态为入库或待取的包裹
+                    // 未付款的包裹是状态为入库或待取的包裹
                     if ((current->status == STATUS_INSTOCK || current->status == STATUS_PENDING_PICKUP) && 
                         strcmp(current->user_phone_number, current_user->phone_number) == 0) {
                         printf("单号: %s, 费用: %.2f 元\n", current->tracking_number, current->cost);
@@ -733,15 +733,27 @@ void mainMenuInterface(User* current_user, Package** package_head, User** user_h
     }
     
     int choice;
+    char buffer[64]; // 用于清除输入缓冲区的buffer
     
     do {
         // 显示用户菜单
         displayUserMenu();
-        scanf("%d", &choice);
+        
+        // 读取用户选择，并检查是否成功读取了一个整数
+        if (scanf("%d", &choice) != 1) {
+            // 读取失败，清除输入缓冲区
+            printf("无效的输入，请输入一个数字\n");
+            scanf("%*[^\n]"); // 清除当前行中的所有字符
+            getchar(); // 清除换行符
+            
+            // 将choice设为无效值，会触发default分支
+            choice = -1;
+            continue;
+        }
         
         switch (choice) {
             case 1: // 查询包裹
-                packageQueryInterface(*package_head);
+                packageQueryInterface(*package_head, current_user);
                 break;
                 
             case 2: // 寄送包裹
@@ -797,10 +809,11 @@ void mainMenuInterface(User* current_user, Package** package_head, User** user_h
                 printf("无效的选择，请重新输入\n");
         }
         
+        // 消耗输入缓冲区中的字符，准备下一次输入
         if (choice != 0) {
             printf("\n按 Enter 键继续...");
-            getchar(); // 消耗之前输入的换行符
-            getchar(); // 等待用户按 Enter
+            scanf("%*[^\n]");  // 清除输入缓冲区中的任何剩余数据
+            getchar();         // 消耗换行符
         }
         
     } while (choice != 0);
@@ -813,7 +826,18 @@ void adminConsoleInterface(Package** package_head, User** user_head, System* sys
     do {
         // 显示管理员菜单
         displayAdminMenu();
-        scanf("%d", &choice);
+        
+        // 读取用户选择，并检查是否成功读取了一个整数
+        if (scanf("%d", &choice) != 1) {
+            // 读取失败，清除输入缓冲区
+            printf("无效的输入，请输入一个数字\n");
+            scanf("%*[^\n]"); // 清除当前行中的所有字符
+            getchar(); // 清除换行符
+            
+            // 将choice设为无效值，会触发default分支
+            choice = -1;
+            continue;
+        }
         
         switch (choice) {
             case 1: // 包裹管理
@@ -827,8 +851,8 @@ void adminConsoleInterface(Package** package_head, User** user_head, System* sys
             case 3: // 系统信息
                 displaySystemInfo(system_data);
                 printf("\n按 Enter 键继续...");
-                getchar(); // 消耗之前输入的换行符
-                getchar(); // 等待用户按 Enter
+                scanf("%*[^\n]");  // 清除输入缓冲区中的任何剩余数据
+                getchar(); // 消耗换行符
                 break;
                 
             case 4: // 异常处理
@@ -863,8 +887,8 @@ void adminConsoleInterface(Package** package_head, User** user_head, System* sys
                     printf("管理员密码已成功更新\n");
                 }
                 printf("\n按 Enter 键继续...");
-                getchar(); // 消耗之前输入的换行符
-                getchar(); // 等待用户按 Enter
+                scanf("%*[^\n]");  // 清除输入缓冲区中的任何剩余数据
+                getchar(); // 消耗换行符
                 break;
                 
             case 0: // 退出登录
@@ -873,6 +897,17 @@ void adminConsoleInterface(Package** package_head, User** user_head, System* sys
                 
             default:
                 printf("无效的选择，请重新输入\n");
+                // 在这里可以添加一个等待按键继续的提示
+                printf("\n按 Enter 键继续...");
+                scanf("%*[^\n]");
+                getchar();
+        }
+        
+        // 如果不是退出选项，确保输入缓冲区是干净的
+        if (choice != 0 && choice != -1) { // choice != -1 是因为已经在无效输入时清理过了
+            // 某些情况下可能已经清理过了，但为了确保一致性，这里再检查一次
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF) { }
         }
         
     } while (choice != 0);

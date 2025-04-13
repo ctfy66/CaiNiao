@@ -63,7 +63,7 @@ Package* findPackageByTrackingNumber(const char* tracking_number, const Package*
     while (current != NULL) {
         if (strcmp(current->tracking_number, tracking_number) == 0) {
             // 返回匹配的包裹
-            return (Package*)current;  // 去除const限定符，因为函数返回类型不是const
+            return (Package*)current;  // 去除const限定符
         }
         current = current->next;
     }
@@ -153,10 +153,9 @@ void generatePickupCode(char* pickup_code) {
     // 取件码格式：一位大写字母+一位小写字母+四位数字
     srand((unsigned int)time(NULL));
     
-    // 生成大写字母 (A-Z: 65-90)
+    
     pickup_code[0] = 'A' + rand() % 26;
     
-    // 生成小写字母 (a-z: 97-122)
     pickup_code[1] = 'a' + rand() % 26;
     
     // 生成4位数字 (0-9)
@@ -170,7 +169,6 @@ void generatePickupCode(char* pickup_code) {
 
 // 计算包裹费用
 double calculatePackageCost(double weight, double distance, int is_insured, double insured_value, int attribute) {
-    // 基础计算费用公式示例
     double base_cost = 8.0;  // 基础费用
     double weight_factor = 2.0;  // 每公斤增加费用
     double distance_factor = 0.05;  // 每公里增加费用
@@ -251,7 +249,7 @@ void processPackageInbound(Package** package_head, System* system_data, User* us
     }
     
     printf("请输入包裹重量(kg): ");
-    scanf("%lf", &weight);
+    scanf("%lf", &weight);                                     
     
     printf("请输入运输距离(km): ");
     scanf("%lf", &distance);
@@ -283,7 +281,7 @@ void processPackageInbound(Package** package_head, System* system_data, User* us
         return;
     }
     
-    // 重新计算正确的费用（含属性）
+    //计算正确的费用（含属性）
     new_package->cost = calculatePackageCost(weight, distance, is_insured, insured_value, attribute);
     
     // 添加到链表
@@ -313,7 +311,7 @@ void processPackageOutbound(Package** package_head, System* system_data) {
         return;
     }
     
-    char tracking_or_pickup[PICKUP_CODE_LEN];
+    char tracking_or_pickup[31];
     int search_by;
     
     printf("\n=== 包裹出库 ===\n");
@@ -332,7 +330,7 @@ void processPackageOutbound(Package** package_head, System* system_data) {
     } else {
         printf("请输入取件码: ");
     }
-    scanf("%s", tracking_or_pickup);
+    scanf("%31s", tracking_or_pickup);
     
     // 查找包裹
     Package* current = *package_head;
@@ -483,7 +481,7 @@ void processSendPackage(Package** package_head, User** user_head, System* system
         return;
     }
     
-    // 重新计算正确的费用（含属性）
+    // 计算正确的费用（含属性）
     new_package->cost = calculatePackageCost(weight, distance, is_insured, insured_value, attribute);
     
     // 显示费用并确认
